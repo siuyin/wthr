@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	nea2HrForecast()
+	//nea2HrForecast()
 }
 
 func main() {
