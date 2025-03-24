@@ -20,6 +20,10 @@ type area struct {
 	Name          string `json:"name"`
 	LabelLocation latLng `json:"label_location"`
 }
+type Forecast struct {
+	Area     string `json:"area"`
+	Forecast string `json:"forecast"`
+}
 type item struct {
 	UpdateTimestamp string `json:"update_timestamp"`
 	Timestamp       string `json:"timestamp"`
@@ -28,11 +32,8 @@ type item struct {
 		End   string `json:"end"`
 		Text  string `json:"text"`
 	} `json:"valid_period"`
-	Forecasts []struct {
-		Area     string `json:"area"`
-		Forecast string `json:"forecast"`
-	}
-	ErrorMsg string `json:"errorMsg"`
+	Forecasts []Forecast `json:"forecasts"`
+	ErrorMsg  string     `json:"errorMsg"`
 }
 type data struct {
 	AreaMetadata []area `json:"area_metadata"`
@@ -101,4 +102,14 @@ func Coords(m Msg) []geo.Coord {
 		a = append(a, e)
 	}
 	return a
+}
+
+func AreaForecasts(msg Msg) []Forecast {
+	return msg.Data.Items[0].Forecasts
+}
+
+func NeighbourhoodForecast(msg Msg, lat, lng float64) []geo.Coord {
+	c := geo.Coord{"", lat, lng}
+	locs := geo.Nearest(3, c, 1)
+	return locs
 }

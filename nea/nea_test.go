@@ -2,9 +2,12 @@ package nea
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/siuyin/wthr/geo"
 )
 
 func TestDecode(t *testing.T) {
@@ -44,4 +47,43 @@ func TestCoords(t *testing.T) {
 	if s := fmt.Sprintf("%s, [%.3f %.3f]", a[0].Name, a[0].Long, a[0].Lat); s != "Ang Mo Kio, [103.839 1.375]" {
 		t.Errorf("bad string compare: got %s", s)
 	}
+}
+
+func TestForecast(t *testing.T) {
+	msg := sampleMsg(t)
+	af := AreaForecasts(msg)
+	if n := len(af); n != 47 {
+		t.Errorf("bad len, got: %d", n)
+	}
+	if af[46].Area != "Yishun" {
+		t.Error("bad area")
+	}
+	if af[46].Forecast != "Cloudy" {
+		t.Error("bad forecast")
+	}
+}
+
+func TestNeighbourhoodForecast(t *testing.T) {
+	f, err := os.CreateTemp("", "neatest-")
+	if err != nil {
+		t.Error(err)
+	}
+
+	t.Setenv("DB_FILE", f.Name())
+	t.Cleanup(func() {
+		os.Setenv("DB_FILE", "")
+		if err := os.Remove(f.Name()); err != nil {
+			log.Println(err)
+		}
+	})
+	msg := sampleMsg(t)
+	coords := Coords(msg)
+	geo.Load(coords)
+
+	t.Run("numLocs", func(t *testing.T) {
+		locs := NeighbourhoodForecast(msg, 1.023, 103.15)
+		if n := len(locs); n != 3 {
+			t.Errorf("bad len, got: %d", n)
+		}
+	})
 }

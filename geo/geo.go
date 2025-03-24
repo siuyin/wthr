@@ -20,7 +20,7 @@ type Coord struct {
 
 var db *buntdb.DB
 
-func init() {
+func openDB() {
 	var err error
 	f := dflt.EnvString("DB_FILE", "/tmp/geo.db")
 	db, err = buntdb.Open(f)
@@ -32,9 +32,10 @@ func init() {
 
 // Load loads coordinates into the internal geospatial database.
 func Load(coords []Coord) error {
+	openDB()
 	for _, c := range coords {
 		val := fmt.Sprintf("[%f %f]", c.Long, c.Lat)
-		set(db, c.Name, val)
+		set(c.Name, val)
 	}
 
 	if err := db.CreateSpatialIndex("geo", "*", buntdb.IndexRect); err != nil {
@@ -85,7 +86,7 @@ func latLng(name, lngLatStr string) Coord {
 	return Coord{name, lat, lng}
 }
 
-func set(db *buntdb.DB, k, v string) {
+func set(k, v string) {
 	if err := db.Update(func(tx *buntdb.Tx) error {
 		_, _, err := tx.Set(k, v, nil)
 		return err
@@ -94,7 +95,7 @@ func set(db *buntdb.DB, k, v string) {
 	}
 }
 
-func get(db *buntdb.DB, k string) string {
+func get(k string) string {
 	var (
 		val string
 		err error
@@ -112,7 +113,8 @@ func get(db *buntdb.DB, k string) string {
 	return val
 }
 
-func list(db *buntdb.DB) {
+// List displays the contents of the internal database.
+func List() {
 	if err := db.View(func(tx *buntdb.Tx) error {
 		return tx.Ascend("", func(k, v string) bool {
 			fmt.Println(k, v)
