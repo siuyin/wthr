@@ -12,6 +12,8 @@
       <h1>Weather</h1>
       <img class="hdr" src="img/wthr.png"/>
     </div>
-    <section id="forecasts" hx-trigger="load" hx-get="/fc" >getting forecasts...</section>
+    <section id="localsec">getting local forecasts...</section>
+    <section id="forecastsec" hx-trigger="load" hx-get="/fc" >getting all area forecasts...</section>
+    <script src="main.js" type="module"></script>
   </body>
 </html>

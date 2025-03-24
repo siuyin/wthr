@@ -81,9 +81,16 @@ func TestNeighbourhoodForecast(t *testing.T) {
 	geo.Load(coords)
 
 	t.Run("numLocs", func(t *testing.T) {
-		locs := NeighbourhoodForecast(msg, 1.023, 103.15)
-		if n := len(locs); n != 3 {
+		fc := NeighbourhoodForecast(msg, 1.023, 103.15)
+		if n := len(fc); n != 3 {
 			t.Errorf("bad len, got: %d", n)
 		}
+
+		area := fc[0].Area
+		forecast := fc[0].Forecast
+		if area != "Tuas" && forecast != "Cloudy" {
+			t.Errorf("bad forecast, got: %s %s", area, forecast)
+		}
 	})
+
 }

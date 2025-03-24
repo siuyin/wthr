@@ -20,6 +20,7 @@ func init() {
 func main() {
 	http.Handle("/", http.FileServer(http.FS(public.Content)))
 	http.HandleFunc("/fc", forecastHandler)
+	http.HandleFunc("/nfc", neighbourhoodForecastHandler)
 
 	port := dflt.EnvString("PORT", "8080")
 	log.Printf("starting webserver on PORT=%s\n", port)
@@ -27,8 +28,17 @@ func main() {
 }
 
 func forecastHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<html>")
+	fmt.Fprintf(w, "<html><h2>Singapore Weather</h2>")
 	fc := nea.AreaForecasts(nea.Forecast2Hr())
+	for i, f := range fc {
+		fmt.Fprintf(w, "%d. %s: %s<br>", i+1, f.Area, f.Forecast)
+	}
+	fmt.Fprintf(w, "</html>")
+}
+
+func neighbourhoodForecastHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "<html><h2>Local Forecasts</h2>")
+	fc := nea.NeighbourhoodForecast(nea.Forecast2Hr(), 1.3463302, 103.7732786)
 	for i, f := range fc {
 		fmt.Fprintf(w, "%d. %s: %s<br>", i+1, f.Area, f.Forecast)
 	}
