@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/siuyin/dflt"
 	"github.com/siuyin/wthr/geo"
@@ -37,8 +38,18 @@ func forecastHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func neighbourhoodForecastHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<html><h2>Local Forecasts</h2>")
-	fc := nea.NeighbourhoodForecast(nea.Forecast2Hr(), 1.3463302, 103.7732786)
+	lat, err := strconv.ParseFloat(r.FormValue("lat"), 64)
+	if err != nil {
+		log.Println(err)
+	}
+
+	lng, err := strconv.ParseFloat(r.FormValue("lng"), 64)
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Fprintf(w, fmt.Sprintf("<html><h2>Local Forecasts (%.4f,%.4f)</h2>", lat, lng))
+
+	fc := nea.NeighbourhoodForecast(nea.Forecast2Hr(), lat, lng)
 	for i, f := range fc {
 		fmt.Fprintf(w, "%d. %s: %s<br>", i+1, f.Area, f.Forecast)
 	}
