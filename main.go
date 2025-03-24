@@ -29,8 +29,10 @@ func main() {
 }
 
 func forecastHandler(w http.ResponseWriter, r *http.Request) {
+	msg := nea.Forecast2Hr()
+	fc := nea.AreaForecasts(msg)
 	fmt.Fprintf(w, "<html><h2>Singapore Weather</h2>")
-	fc := nea.AreaForecasts(nea.Forecast2Hr())
+	fmt.Fprintf(w, "<p>%s</p>", nea.ForecastPeriod(msg))
 	for i, f := range fc {
 		fmt.Fprintf(w, "%d. %s: %s<br>", i+1, f.Area, f.Forecast)
 	}

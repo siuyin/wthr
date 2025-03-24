@@ -24,16 +24,17 @@ type Forecast struct {
 	Area     string `json:"area"`
 	Forecast string `json:"forecast"`
 }
+type ValidPeriod struct {
+	Start string `json:"start"`
+	End   string `json:"end"`
+	Text  string `json:"text"`
+}
 type item struct {
 	UpdateTimestamp string `json:"update_timestamp"`
 	Timestamp       string `json:"timestamp"`
-	ValidPeriod     struct {
-		Start string `json:"start"`
-		End   string `json:"end"`
-		Text  string `json:"text"`
-	} `json:"valid_period"`
-	Forecasts []Forecast `json:"forecasts"`
-	ErrorMsg  string     `json:"errorMsg"`
+	ValidPeriod     `json:"valid_period"`
+	Forecasts       []Forecast `json:"forecasts"`
+	ErrorMsg        string     `json:"errorMsg"`
 }
 type data struct {
 	AreaMetadata []area `json:"area_metadata"`
@@ -123,4 +124,8 @@ func NeighbourhoodForecast(msg Msg, lat, lng float64) []Forecast {
 	}
 	return fc
 
+}
+
+func ForecastPeriod(msg Msg) string {
+	return msg.Data.Items[0].ValidPeriod.Text
 }
