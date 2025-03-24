@@ -1,16 +1,14 @@
-function getPos() {
-  navigator.geolocation.getCurrentPosition((pos) =>{
-    localForecasts(pos.coords.latitude,pos.coords.longitude)
+
+async function getPos() {
+  const pos = await new Promise((success)=>{
+    navigator.geolocation.getCurrentPosition(success)
   })
-}
-
-async function localForecasts(lat,lng) {
+  const lat = pos.coords.latitude
+  const lng = pos.coords.longitude
   const f = await fetch(`nfc?lat=${lat}&lng=${lng}`)
-  const txt = await f.text()
   const s = document.getElementById("localsec")
-  s.innerHTML = txt
-  console.log(`lat: ${lat}, lng: ${lng}`)
+  s.innerHTML = await f.text()
+  console.log(`${lat},${lng}`)
 }
-
 
 document.addEventListener("DOMContentLoaded", getPos)
