@@ -34,9 +34,9 @@ func TestMsgToString(t *testing.T) {
 	}
 }
 
-func TestAreaLongLat(t *testing.T) {
+func TestCoords(t *testing.T) {
 	msg := sampleMsg(t)
-	a := AreaLongLat(msg)
+	a := Coords(msg)
 	if n := len(a); n == 0 {
 		t.Error("bad len")
 	}

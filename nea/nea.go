@@ -1,3 +1,4 @@
+// Package nea provides functions to work with Singapore's National Environmental Agency's APIs.
 package nea
 
 import (
@@ -7,6 +8,8 @@ import (
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/siuyin/wthr/geo"
 )
 
 type latLng struct {
@@ -77,17 +80,11 @@ func Decode(r io.Reader) Msg {
 	return msg
 }
 
-type AreaCoords struct {
-	Name string
-	Long float64
-	Lat  float64
-}
-
-// AreaLongLat returns a list of area names, and their longitudes and latitudes.
-func AreaLongLat(m Msg) []AreaCoords {
-	a := []AreaCoords{}
+// Coords returns a list of area names, and their latitudes and  longitudes.
+func Coords(m Msg) []geo.Coord {
+	a := []geo.Coord{}
 	for _, v := range m.Data.AreaMetadata {
-		var e AreaCoords
+		var e geo.Coord
 		var err error
 		e.Name = v.Name
 
