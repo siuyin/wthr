@@ -26,7 +26,7 @@ jobs:
           mkdir -p /home/runner/.ssh
           echo "${{ secrets.RASPKEY }}" > /home/runner/.ssh/id_ed25519
           echo "${{ secrets.RASPKEY_PUB }}" > /home/runner/.ssh/id_ed25519.pub
-          chmod 600 .ssh/id_ed25519
+          chmod 600 /home/runner/.ssh/id_ed25519
           ls -al .ssh
           pwd
           ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -v -p 22322 siuyin@rasp.beyondbroadcast.com ls -al
