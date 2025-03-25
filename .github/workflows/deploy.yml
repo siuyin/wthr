@@ -24,7 +24,7 @@ jobs:
       - name: Setup keys
         run: |
           mkdir -p .keys
-          echo "${{ secrets.RASPKEY }}"" > .keys/rasp
+          echo "${{ secrets.RASPKEY }}" > .keys/rasp
           ls -al .keys
           #ssh -i .keys/rasp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 22322 siuyin@rasp.beyondbroadcast.com ls -al
 
