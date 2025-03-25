@@ -27,6 +27,6 @@ jobs:
           echo "${{ secrets.RASPKEY }}" > .keys/rasp
           chmod 600 .keys/rasp
           ls -al .keys
-          ssh -i .keys/rasp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 22322 siuyin@rasp.beyondbroadcast.com ls -al
+          ssh -i .keys/rasp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -v -p 22322 siuyin@rasp.beyondbroadcast.com ls -al
 
 
