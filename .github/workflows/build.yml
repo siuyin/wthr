@@ -22,7 +22,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      - name: Check go version and do a mod init
+      - name: Build for ARMv6 raspberry pi
         run: |
           go version
           go mod tidy
