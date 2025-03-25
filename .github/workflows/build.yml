@@ -3,9 +3,9 @@ name: Build wthr
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
-  # push:
-  #   tags:
-  #     - "v**"
+  push:
+    tags:
+      - "v**"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -22,10 +22,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      - name: Build for ARMv6 raspberry pi
+      - name: Test and build for ARMv6 raspberry pi
         run: |
           go version
           go mod tidy
+          go test -v ./...
           GOOS=linux GOARCH=arm GOARM=6 go build -o junk .
           file ./junk
           ls -lh ./junk
