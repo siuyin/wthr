@@ -46,10 +46,11 @@ jobs:
           chmod 600 /home/runner/.ssh/id_ed25519
           ls -al /home/runner/.ssh
           pwd
-          ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -v -p 22322 siuyin@rasp.beyondbroadcast.com ps aux|grep junk
-          ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -v -p 22322 siuyin@rasp.beyondbroadcast.com killall junk
+          ls -al
+          ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -p 22322 siuyin@rasp.beyondbroadcast.com ps aux|grep junk
+          ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -p 22322 siuyin@rasp.beyondbroadcast.com killall junk
           scp -P 22322 junk siuyin@rasp.beyondbroadcast.com:
-          ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -v -p 22322 siuyin@rasp.beyondbroadcast.com nohup ./junk 2>&1 </dev/null &
-          ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -v -p 22322 siuyin@rasp.beyondbroadcast.com ps aux|grep junk
+          ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -p 22322 siuyin@rasp.beyondbroadcast.com nohup ./junk 2>&1 </dev/null &
+          ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -p 22322 siuyin@rasp.beyondbroadcast.com ps aux|grep junk
 
 
