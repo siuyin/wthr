@@ -10,7 +10,7 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
-  build:
+  buildAndDeploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -27,15 +27,6 @@ jobs:
           file ./junk
           ls -lh ./junk
 
-  deploy:
-    needs: build
-
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Setup keys and deploy
         run: |
           mkdir -p /home/runner/.ssh
@@ -50,5 +41,3 @@ jobs:
           scp -P 22322 junk siuyin@rasp.beyondbroadcast.com:
           ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -p 22322 siuyin@rasp.beyondbroadcast.com nohup ./junk 2>&1 </dev/null &
           ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -p 22322 siuyin@rasp.beyondbroadcast.com ps aux|grep junk
-
-
