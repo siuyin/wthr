@@ -27,7 +27,7 @@ jobs:
           echo "${{ secrets.RASPKEY }}" > /home/runner/.ssh/id_ed25519
           echo "${{ secrets.RASPKEY_PUB }}" > /home/runner/.ssh/id_ed25519.pub
           chmod 600 /home/runner/.ssh/id_ed25519
-          ls -al .ssh
+          ls -al /home/runner/.ssh
           pwd
           ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -v -p 22322 siuyin@rasp.beyondbroadcast.com ls -al
 
