@@ -23,9 +23,9 @@ jobs:
         run: |
           go version
           go mod tidy
-          GOOS=linux GOARCH=arm GOARM=6 go build -o junk .
-          file ./junk
-          ls -lh ./junk
+          GOOS=linux GOARCH=arm GOARM=6 go build -o wthr.
+          file ./wthr
+          ls -lh ./wthr
 
       - name: Setup keys and deploy
         run: |
@@ -38,6 +38,6 @@ jobs:
           ls -al
           ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -p 22322 siuyin@rasp.beyondbroadcast.com ls -al
           ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -p 22322 siuyin@rasp.beyondbroadcast.com killall junk || true
-          scp -P 22322 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no junk siuyin@rasp.beyondbroadcast.com: 
-          ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -p 22322 siuyin@rasp.beyondbroadcast.com nohup ./junk 2>&1 </dev/null &
+          scp -P 22322 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no wthr siuyin@rasp.beyondbroadcast.com: 
+          ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -p 22322 siuyin@rasp.beyondbroadcast.com nohup ./wthr 2>&1 </dev/null &
           ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -p 22322 siuyin@rasp.beyondbroadcast.com ps aux|grep junk
