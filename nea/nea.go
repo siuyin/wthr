@@ -113,7 +113,7 @@ func NeighbourhoodForecast(msg Msg, lat, lng float64) []Forecast {
 	fc := []Forecast{}
 	af := AreaForecasts(msg)
 
-	c := geo.Coord{"", lat, lng}
+	c := geo.Coord{Name: "", Lat: lat, Long: lng}
 	locs := geo.Nearest(3, c, 1)
 	for _, v := range locs { // do a linear search
 		for _, w := range af {
