@@ -92,7 +92,7 @@ func Decode(r io.Reader) Msg {
 	return msg
 }
 
-func Summary() Msg {
+func Forecast() Msg {
 	const url = "https://api-open.data.gov.sg/v2/real-time/api/twenty-four-hr-forecast"
 	res, err := http.Get(url)
 	if err != nil {

@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	msg := daily.Summary()
+	msg := daily.Forecast()
 	fmt.Printf("Forecast for %s: %s\n", msg.Data.Records[0].General.ValidPeriod.Text,
 		msg.Data.Records[0].General.Forecast.Text)
 	// fmt.Printf(daily.Current(msg))
