@@ -2,7 +2,6 @@ package daily
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -21,7 +20,7 @@ type record struct {
 	Date             string   `json:"date"`
 	UpdatedTimestamp string   `json:"updatedTimestamp"`
 	General          general  `json:"general"`
-	Periods          []period `json:"periods"`
+	Periods          []Period `json:"periods"`
 	Timestamp        string   `json:"timestamp"`
 }
 type general struct {
@@ -52,34 +51,35 @@ type general struct {
 		Direction string `json:"direction"`
 	} `json:"wind"`
 }
-type period struct {
+type Period struct {
 	TimePeriod struct {
 		Start string `json:"start"`
 		End   string `json:"end"`
 		Text  string `json:"text"`
 	} `json:"timePeriod"`
-	Regions struct {
-		West struct {
-			Code string `json:"code"`
-			Text string `json:"text"`
-		} `json:"west"`
-		East struct {
-			Code string `json:"code"`
-			Text string `json:"text"`
-		} `json:"east"`
-		Central struct {
-			Code string `json:"code"`
-			Text string `json:"text"`
-		} `json:"central"`
-		South struct {
-			Code string `json:"code"`
-			Text string `json:"text"`
-		} `json:"south"`
-		North struct {
-			Code string `json:"code"`
-			Text string `json:"text"`
-		} `json:"north"`
-	}
+	Regions Regions `json:"regions"`
+}
+type Regions struct {
+	West struct {
+		Code string `json:"code"`
+		Text string `json:"text"`
+	} `json:"west"`
+	East struct {
+		Code string `json:"code"`
+		Text string `json:"text"`
+	} `json:"east"`
+	Central struct {
+		Code string `json:"code"`
+		Text string `json:"text"`
+	} `json:"central"`
+	South struct {
+		Code string `json:"code"`
+		Text string `json:"text"`
+	} `json:"south"`
+	North struct {
+		Code string `json:"code"`
+		Text string `json:"text"`
+	} `json:"north"`
 }
 
 func Decode(r io.Reader) Msg {
@@ -92,7 +92,7 @@ func Decode(r io.Reader) Msg {
 	return msg
 }
 
-func Forecast() Msg {
+func Summary() Msg {
 	const url = "https://api-open.data.gov.sg/v2/real-time/api/twenty-four-hr-forecast"
 	res, err := http.Get(url)
 	if err != nil {
@@ -103,19 +103,13 @@ func Forecast() Msg {
 	return Decode(res.Body)
 }
 
-func Current(msg Msg) string {
-	p := timePeriod(time.Now())
-	r := msg.Data.Records[0].Periods[p].Regions
-	fc0 := fmt.Sprintf("West: %s\nEast: %s\nCentral: %s\nSouth: %s\nNorth: %s\n",
-		r.West.Text, r.East.Text, r.Central.Text, r.South.Text, r.North.Text)
-	if p == 3 {
-		return fc0
+func CurrentForecast(msg Msg) []Period {
+	// p := timePeriod(time.Now())
+	aP := msg.Data.Records[0].Periods // available Periods
+	if len(aP) == 1 {
+		return []Period{aP[0]}
 	}
-
-	r = msg.Data.Records[0].Periods[p+1].Regions
-	fc1 := fmt.Sprintf("\nLater:\nWest: %s\nEast: %s\nCentral: %s\nSouth: %s\nNorth: %s\n",
-		r.West.Text, r.East.Text, r.Central.Text, r.South.Text, r.North.Text)
-	return fc0 + fc1
+	return []Period{aP[0], aP[1]}
 }
 
 func timePeriod(tm time.Time) int {
