@@ -19,6 +19,6 @@ func main() {
 		}
 		fmt.Printf("Period: %s\n", p.TimePeriod.Text)
 		fmt.Printf("West: %s\nEast: %s\nCentral: %s\nSouth: %s\nNorth: %s\n",
-			p.Regions.West.Text, p.Regions.East.Text, p.Regions.Central.Text, p.Regions.South.Text, p.Regions.North.Text)
+			p.Region.West.Text, p.Region.East.Text, p.Region.Central.Text, p.Region.South.Text, p.Region.North.Text)
 	}
 }

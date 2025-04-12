@@ -57,9 +57,9 @@ type Period struct {
 		End   string `json:"end"`
 		Text  string `json:"text"`
 	} `json:"timePeriod"`
-	Regions Regions `json:"regions"`
+	Region Region `json:"regions"`
 }
-type Regions struct {
+type Region struct {
 	West struct {
 		Code string `json:"code"`
 		Text string `json:"text"`

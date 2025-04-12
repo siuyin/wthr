@@ -40,7 +40,7 @@ func TestDailyForecast(t *testing.T) {
 		if l.TimePeriod.End != "2025-04-13T00:00:00+08:00" {
 			t.Error("bad end time")
 		}
-		if l.Regions.North.Text != "Cloudy" {
+		if l.Region.North.Text != "Cloudy" {
 			t.Error("bad region forecast")
 		}
 	})
@@ -49,21 +49,21 @@ func TestDailyForecast(t *testing.T) {
 func TestTimePeriod(t *testing.T) {
 	dat := []struct {
 		tm time.Time
-		p int
+		p  int
 	}{
-		{time.Date(2000,1,1,0,0,0,0,time.UTC), 0},
-		{time.Date(2000,1,1,6,0,0,0,time.UTC), 1},
-		{time.Date(2000,1,1,12,0,0,0,time.UTC), 2},
-		{time.Date(2000,1,1,18,0,0,0,time.UTC), 3},
+		{time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC), 0},
+		{time.Date(2000, 1, 1, 6, 0, 0, 0, time.UTC), 1},
+		{time.Date(2000, 1, 1, 12, 0, 0, 0, time.UTC), 2},
+		{time.Date(2000, 1, 1, 18, 0, 0, 0, time.UTC), 3},
 
-		{time.Date(2000,1,1,5,59,59,0,time.UTC), 0},
-		{time.Date(2000,1,1,11,59,59,0,time.UTC), 1},
-		{time.Date(2000,1,1,17,59,59,0,time.UTC), 2},
-		{time.Date(2000,1,1,23,59,59,0,time.UTC), 3},
+		{time.Date(2000, 1, 1, 5, 59, 59, 0, time.UTC), 0},
+		{time.Date(2000, 1, 1, 11, 59, 59, 0, time.UTC), 1},
+		{time.Date(2000, 1, 1, 17, 59, 59, 0, time.UTC), 2},
+		{time.Date(2000, 1, 1, 23, 59, 59, 0, time.UTC), 3},
 	}
-	for _,d := range dat {
-		if p := timePeriod(d.tm);p != d.p {
-			t.Errorf("%s should be in period %d, got %d",d.tm,d.p,p)
+	for _, d := range dat {
+		if p := timePeriod(d.tm); p != d.p {
+			t.Errorf("%s should be in period %d, got %d", d.tm, d.p, p)
 		}
 	}
 
